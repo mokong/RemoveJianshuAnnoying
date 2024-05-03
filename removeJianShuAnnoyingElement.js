@@ -21,6 +21,8 @@
     document.head.appendChild(rootStyle);
     
     // 移除登录弹窗
+    
+    // 登录弹窗-半透明背景移除
     const targetStyle = "overflow: hidden;";
     const newStyle = "none";
     const styleObserver = new MutationObserver(mutations => {
@@ -34,20 +36,8 @@
         });
     });
     styleObserver.observe(document.body, { attributes: true });
-
-    const targetClass = "__copy-button";
-    const childListObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                const copyButtonDiv = document.querySelector(`div.${targetClass}`);
-                if (copyButtonDiv && copyButtonDiv.nextElementSibling) {
-                    copyButtonDiv.nextElementSibling.remove();
-                }
-            }
-        });
-    });
-    childListObserver.observe(document.body, { childList: true, subtree: true });
     
+    // 登录弹窗移除
     const targetDivClass = "_23ISFX-mask";
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
