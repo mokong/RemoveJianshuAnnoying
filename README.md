@@ -38,9 +38,9 @@
 
 ![自动生成代码1](https://raw.githubusercontent.com/mokong/BlogImages/main/自动生成代码1.png)
 
-上面的方法只是将`body`的`style`改了，并没有移除尾部`div`，所以，还需要移除尾部`div`。而移除尾部`div`，同样，我们让腾讯混元助手帮我们实现，告诉他`使用 js 写一个暴力猴脚本，当body 里 class="__copy-button"的 div后面有新增 div 时，移除那个新增的 div`，因为通过观察发现，简书弹出登陆框，是在尾部插入了一个新的`div`，所以通过判断没弹登录之前最后的div，如果后面多出了一个`div`，就移除这个`div`。如下图：
+上面的方法只是将`body`的`style`改了，并没有移除尾部`div`，所以，还需要移除尾部`div`。而移除尾部`div`，同样，我们让腾讯混元助手帮我们实现，告诉他`使用 js写一个暴力猴脚本，当 body 中有新增 maskDiv 时，且新增 maskDiv 的子 div的子 div 包含class="_23ISFX-mask"的div时，移除maskDiv`，因为通过观察发现，简书弹出登陆框，是在尾部插入了一个新的`div`，所以通过判断没弹登录之前最后的div，如果后面多出了一个`div`，就移除这个`div`。如下图：
 
-![自动生成代码2](https://raw.githubusercontent.com/mokong/BlogImages/main/自动生成代码2.png)
+![腾讯混元助手](https://raw.githubusercontent.com/mokong/BlogImages/main/screenshot-20240503-145716.png)
 
 然后找到暴力猴，点击 dashboard，新增一个 script，把上面混元助手生成的代码稍微修改后添加进去，并设置匹配的网站，最终如下：
 
@@ -76,19 +76,23 @@
 
     styleObserver.observe(document.body, { attributes: true });
 
-    const targetClass = "__copy-button";
-    const childListObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
+    // 登录弹窗移除
+    const targetDivClass = "_23ISFX-mask";
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                const copyButtonDiv = document.querySelector(`div.${targetClass}`);
-                if (copyButtonDiv && copyButtonDiv.nextElementSibling) {
-                    copyButtonDiv.nextElementSibling.remove();
-                }
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && node.tagName.toLowerCase() === 'div') {
+                        const grandchildDiv = node.querySelector(`div div.${targetDivClass}`);
+                        if (grandchildDiv) {
+                            node.remove();
+                        }
+                    }
+                });
             }
         });
     });
-
-    childListObserver.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
 })();
 
 ```
@@ -143,19 +147,23 @@
 
     styleObserver.observe(document.body, { attributes: true });
 
-    const targetClass = "__copy-button";
-    const childListObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
+    // 登录弹窗移除
+    const targetDivClass = "_23ISFX-mask";
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                const copyButtonDiv = document.querySelector(`div.${targetClass}`);
-                if (copyButtonDiv && copyButtonDiv.nextElementSibling) {
-                    copyButtonDiv.nextElementSibling.remove();
-                }
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && node.tagName.toLowerCase() === 'div') {
+                        const grandchildDiv = node.querySelector(`div div.${targetDivClass}`);
+                        if (grandchildDiv) {
+                            node.remove();
+                        }
+                    }
+                });
             }
         });
     });
-
-    childListObserver.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     // 移除推荐
     const recommendClass = "ouvJEz";
@@ -215,19 +223,23 @@
 
     styleObserver.observe(document.body, { attributes: true });
 
-    const targetClass = "__copy-button";
-    const childListObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
+    // 登录弹窗移除
+    const targetDivClass = "_23ISFX-mask";
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                const copyButtonDiv = document.querySelector(`div.${targetClass}`);
-                if (copyButtonDiv && copyButtonDiv.nextElementSibling) {
-                    copyButtonDiv.nextElementSibling.remove();
-                }
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && node.tagName.toLowerCase() === 'div') {
+                        const grandchildDiv = node.querySelector(`div div.${targetDivClass}`);
+                        if (grandchildDiv) {
+                            node.remove();
+                        }
+                    }
+                });
             }
         });
     });
-
-    childListObserver.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     // 移除推荐
     // const recommendClass = "ouvJEz";
@@ -301,18 +313,23 @@
     });
     styleObserver.observe(document.body, { attributes: true });
 
-    const targetClass = "__copy-button";
-    const childListObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
+    // 登录弹窗移除
+    const targetDivClass = "_23ISFX-mask";
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                const copyButtonDiv = document.querySelector(`div.${targetClass}`);
-                if (copyButtonDiv && copyButtonDiv.nextElementSibling) {
-                    copyButtonDiv.nextElementSibling.remove();
-                }
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && node.tagName.toLowerCase() === 'div') {
+                        const grandchildDiv = node.querySelector(`div div.${targetDivClass}`);
+                        if (grandchildDiv) {
+                            node.remove();
+                        }
+                    }
+                });
             }
         });
     });
-    childListObserver.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     // 移除推荐
     // const recommendClass = "ouvJEz";
@@ -392,18 +409,23 @@
     });
     styleObserver.observe(document.body, { attributes: true });
 
-    const targetClass = "__copy-button";
-    const childListObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
+    // 登录弹窗移除
+    const targetDivClass = "_23ISFX-mask";
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                const copyButtonDiv = document.querySelector(`div.${targetClass}`);
-                if (copyButtonDiv && copyButtonDiv.nextElementSibling) {
-                    copyButtonDiv.nextElementSibling.remove();
-                }
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && node.tagName.toLowerCase() === 'div') {
+                        const grandchildDiv = node.querySelector(`div div.${targetDivClass}`);
+                        if (grandchildDiv) {
+                            node.remove();
+                        }
+                    }
+                });
             }
         });
     });
-    childListObserver.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     // 移除推荐
     // const recommendClass = "ouvJEz";
